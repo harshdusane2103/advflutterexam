@@ -6,7 +6,7 @@
 <div align="center">
   <h3 align="left">Descripation :</h3>
   <p>
-    Habit tracker App is create by sql database,couldfireStore.
+    Habit tracker App is create by sql database,couldfireStore.This app help for daliy tasks.
   </p>
 </div>
 <div align="center">
