@@ -1,18 +1,18 @@
 <h1 align="center">
-  Final Exam -Habit tracker
+  Final Exam -Fitness App
 
 </h1>
 
 <div align="center">
   <h3 align="left">Descripation :</h3>
   <p>
-    Habit tracker App is create by sql database,couldfireStore.This app help for daliy tasks.
+   Fitness App is create by sql database,couldfireStore.This app help for daliy tasks.
   </p>
 </div>
 <div align="center">
-  <img src="https://github.com/harshdusane2103/advflutterexam/blob/master/1.png", width=21%,height=35%>
-  <img src="https://github.com/harshdusane2103/advflutterexam/blob/master/2.png", width=21%,height=35%>
-    <img src="https://github.com/harshdusane2103/advflutterexam/blob/master/4.png", width=21%,height=35%>
+  <img src="https://github.com/harshdusane2103/advflutterexam/blob/master/p1.png", width=21%,height=35%>
+  <img src="https://github.com/harshdusane2103/advflutterexam/blob/master/p2.png", width=21%,height=35%>
+    <img src="https://github.com/harshdusane2103/advflutterexam/blob/master/p3.png", width=21%,height=35%>
  
  
   
