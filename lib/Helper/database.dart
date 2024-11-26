@@ -1,65 +1,73 @@
 import 'package:advflutterexam/Model/model.dart';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 
-      class DbHelper {
-      static DbHelper dbHelper = DbHelper._();
-      DbHelper._();
-      Database? _db;
+class DatabaseHelper {
+  static final DatabaseHelper _instance = DatabaseHelper._internal();
+  factory DatabaseHelper() => _instance;
 
-      Future get database async => _db ?? await initDatabase();
+  static Database? _database;
 
-      Future initDatabase() async {
-      final path = await getDatabasesPath();
-      final dbPath = join(path, 'habit.db');
+  DatabaseHelper._internal();
 
-      _db = await openDatabase(
-      dbPath,
+  Future<Database> get database async {
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
+    return _database!;
+  }
+
+  Future<Database> _initDatabase() async {
+    String path = join(await getDatabasesPath(), 'exercise.db');
+    return await openDatabase(
+      path,
       version: 1,
-      onCreate: (db, version) async {
-      String sql = '''CREATE TABLE habit(
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
-        days INTEGER NOT NULL,
-        progress TEXT NOT NULL
-       );
-        ''';
-      await db.execute(sql);
+      onCreate: (db, version) {
+        return db.execute('''
+          CREATE TABLE exercises (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            duration INTEGER,
+            date INTEGER,
+            type TEXT,
+            intensity TEXT
+          )
+        ''');
       },
-      );
-      return _db;
-      }
+    );
+  }
 
-      Future<int>insertData(HabitModal habit)  async {
-      Database? db = await database;
-      String sql = '''INSERT INTO habit (id,name,days,progress)
-    VALUES (?,?,?,?);
-    ''';
-      List args = [habit.id,habit.name,habit.days,habit.progress];
-      return await db!.rawInsert(sql, args);
-      }
+  Future<int> insertExercise(ExerciseModel exercise) async {
+    final db = await database;
+    return await db.insert('exercises', exercise.toMap());
+  }
 
-      Future<List<Map<String, Object?>>> readData() async {
-      Database? db = await database;
-      String sql = '''SELECT * FROM habit''';
-      return await db!.rawQuery(sql);
-      }
+  Future<List<ExerciseModel>> getExercises({String? filter, String? sortBy}) async {
+    final db = await database;
+    String orderBy = sortBy ?? 'date DESC';
+    final result = await db.query(
+      'exercises',
+      orderBy: orderBy,
+    );
+    return result.map((map) => ExerciseModel.fromMap(map)).toList();
+  }
 
+  Future<int> updateExercise(ExerciseModel exercise) async {
+    final db = await database;
+    return await db.update(
+      'exercises',
+      exercise.toMap(),
+      where: 'id = ?',
+      whereArgs: [exercise.id],
+    );
+  }
 
-      Future<void> updateData( habit ,int id)
-      async {
-      Database? db =await database;
-      String sql=''' UPDATE habit SET id=?,name=?,days=?,progress=?''';
-      List args=[habit.id,habit.name,habit.days,habit.progress];
-      await db!.rawUpdate(sql,args);
-      }
-
-      Future deleteData(int id) async {
-      Database? db = await database;
-      String sql = '''DELETE FROM habit WHERE id = ?''';
-      List args = [id];
-      await db!.rawDelete(sql, args);
-      }
-
-      }
+  Future<int> deleteExercise(int id) async {
+    final db = await database;
+    return await db.delete(
+      'exercises',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+}

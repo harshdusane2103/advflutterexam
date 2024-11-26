@@ -1,54 +1,44 @@
-
-      import 'package:advflutterexam/Helper/database.dart';
+import 'package:advflutterexam/Helper/database.dart';
 import 'package:advflutterexam/Model/model.dart';
-import 'package:flutter/cupertino.dart';
-      import 'package:get/get.dart';
+import 'package:advflutterexam/Services/firestroe.dart';
+import 'package:get/get.dart';
 
 
+class ExerciseController extends GetxController {
+  var exercises = <ExerciseModel>[].obs;
+  final dbHelper = DatabaseHelper();
+  final firestoreService = FirestoreService();
+  String? userId; // Set this from Firebase Auth
 
-      class HabitController extends GetxController
+  @override
+  void onInit() {
+    super.onInit();
+    fetchExercises();
+  }
 
-          {
-          RxList<HabitModal> HabitList=<HabitModal>[].obs;
-          TextEditingController txtId=TextEditingController();
-          TextEditingController txtname=TextEditingController();
-          TextEditingController txtdays=TextEditingController();
-          TextEditingController txtprogress=TextEditingController();
-          // DatabaseHelper? databaseHelper;
-          @override
-          void onInit()
-          {
-          super.onInit();
-          fetchData();
-          }
-          Future<void> fetchData()
-          async {
-          await DbHelper.dbHelper.database;
-          readDataCome();
-          }
+  void fetchExercises() async {
+    exercises.value = await dbHelper.getExercises();
+  }
 
-          Future<void> readDataCome()
-          async {
-          List data = await DbHelper.dbHelper.readData();
-          HabitList.value = data.map((e)=>HabitModal.fromMap(e),).toList();
-          }
+  void addExercise(ExerciseModel exercise) async {
+    await dbHelper.insertExercise(exercise);
+    await syncToFirestore();
+    fetchExercises();
+  }
 
-          void insertRecords(HabitModal student)
-          async {
-          await DbHelper.dbHelper.insertData(student);
-          readDataCome();
-          }
-          void updataRecords(HabitModal student,int index)
-          {
-          DbHelper.dbHelper.updateData(student, index);
+  void updateExercise(ExerciseModel exercise) async {
+    await dbHelper.updateExercise(exercise);
+    await syncToFirestore();
+    fetchExercises();
+  }
 
-          readDataCome();
-          }
-          void deleteData(int id)
-          {
-          DbHelper.dbHelper.deleteData(id);
-          fetchData();
-          }
+  void deleteExercise(int id) async {
+    await dbHelper.deleteExercise(id);
+    fetchExercises();
+  }
 
-
-          }
+  Future<void> syncToFirestore() async {
+    if (userId == null) return;
+    await firestoreService.syncExercises(userId!, exercises.toList());
+  }
+}
