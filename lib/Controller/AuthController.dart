@@ -1,7 +1,11 @@
 
-import 'package:advflutterexam/Services/Auth_services.dart';
+
+import 'package:advflutterexam/Services/AuthServices.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+
+
 
 class AuthController extends GetxController {
   TextEditingController txtFirstName = TextEditingController();

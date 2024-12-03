@@ -1,11 +1,16 @@
 
-import 'package:advflutterexam/Controller/Auth/auth.dart';
-import 'package:advflutterexam/View/Auth/signin.dart';
+
+import 'package:advflutterexam/Controller/AuthController.dart';
+import 'package:advflutterexam/View/Home.dart';
+import 'package:advflutterexam/View/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class SignupScreen extends StatelessWidget {
-  const SignupScreen({super.key});
+
+
+
+class SignIn extends StatelessWidget {
+  const SignIn({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,47 +23,20 @@ class SignupScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Sign Up',
-                style:TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.w600,
+              Center(
+                child: Text(
+                  'Sign In',
+                  style:TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               SizedBox(
                 height: 20,
               ),
 
-              Row(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 50,
-                      child: TextField(
-                        controller: controller.txtFirstName,
-                        keyboardType: TextInputType.name,
-                        cursorColor: Colors.black45,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.all(9),
-                          prefixIcon: Icon(Icons.person),
-                          labelText: 'Name',
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
 
-                          ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(8),
-                            borderSide: BorderSide(
-                              color: Color(0xffC7C9D9),
-                              width: 1,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
 
               SizedBox(
                 height: 10,
@@ -85,6 +63,8 @@ class SignupScreen extends StatelessWidget {
                   ),
                 ),
               ),
+
+
               SizedBox(
                 height: 10,
               ),
@@ -111,26 +91,46 @@ class SignupScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              Row(
+                children: [
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.all(3.0),
+
+                    child: Text(
+                      "Forget Password?",
+                      textAlign: TextAlign.right,
+                      style: TextStyle(
+                        color: Colors.green[900],
+                        fontSize: 15,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
               SizedBox(
-                height: 10,
+                height: 20,
               ),
 
-
-
-
-              SizedBox(
-                height: 25,
-              ),
               GestureDetector(
                 onTap: () {
-                  controller.signUp(
+
+                  controller.signIn(
                       controller.txtEmail.text, controller.txtPassword.text);
                   controller.txtEmail.clear();
                   controller.txtPassword.clear();
-                  controller.txtFirstName.clear();
 
-                  Get.to(SignIn());
 
+
+                  Get.snackbar(
+                    'Sign in',
+                    'Sign in Successfully',
+                    snackPosition: SnackPosition.BOTTOM,
+                    backgroundColor: Colors.green,
+                    colorText: Colors.white,
+                  );
+                  Get.to(HomeScreen());
 
                 },
                 child: Container(
@@ -142,7 +142,7 @@ class SignupScreen extends StatelessWidget {
                   ),
                   alignment: Alignment.center,
                   child: Text(
-                    'SignUp',
+                    'Sign In',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 18,
@@ -155,7 +155,7 @@ class SignupScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Already have account?',
+                    "Don't have account?",
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 15,
@@ -164,10 +164,11 @@ class SignupScreen extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      Get.to(SignIn());
+
+                      Get.offAll(SignupScreen());
                     },
                     child: Text(
-                      'Login',
+                      'Signup',
                       style: TextStyle(
                           fontSize: 15,
                           color: Colors.red,
@@ -175,6 +176,9 @@ class SignupScreen extends StatelessWidget {
                     ),
                   ),
                 ],
+              ),
+              SizedBox(
+                height: 10,
               ),
             ],
           ),

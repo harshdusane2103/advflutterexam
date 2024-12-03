@@ -1,5 +1,6 @@
 
-import 'package:advflutterexam/View/Auth/signin.dart';
+
+import 'package:advflutterexam/View/singin.dart';
 import 'package:advflutterexam/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
